@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {HashRouter as Router, Switch, Route} from 'react-router-dom';
 import DrawWithFriends from "./sketches/DrawWithFriends"
 import Login from "./components/Login";
 import CreateRoom from "./components/CreateRoom";
@@ -12,14 +12,12 @@ class App extends Component {
         return (
             <Router>
                 <div>
-                    <DrawWithFriends />
-                    {/* <PongWithFriends /> */}
-                    {/*<Switch>*/}
-                    {/*    <Route path='/' exact component={Login}/>*/}
-                    {/*    <Route path='/draw-wf' component={DrawWithFriends}/>*/}
+                    <Switch>
+                       <Route exact path='/' component={Login}/>
+                       <Route path='/draw-wf' component={DrawWithFriends}/>
                     {/*    /!*<Route path='/pong-wf' component={PongWithFriends}/>*!/*/}
                     {/*    <Route path='/rooms' component={CreateRoom}/>*/}
-                    {/*</Switch>*/}
+                    </Switch>
                 </div>
             </Router>
         );
