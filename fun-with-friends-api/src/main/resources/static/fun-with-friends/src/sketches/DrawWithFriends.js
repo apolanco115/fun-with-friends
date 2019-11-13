@@ -230,7 +230,7 @@ class DrawWithFriends extends Component {
                 b: parseInt(b),
                 mouseX: parseInt(this.p.mouseX),
                 mouseY: parseInt(this.p.mouseY),
-                brushRadius: this.state.brushRadius
+                brushRadius: parseInt(this.state.brushRadius)
             }),
             type: 'CHAT'
         }
@@ -281,7 +281,7 @@ class DrawWithFriends extends Component {
             </div>
         )
         return (this.state.showForm ? form : (this.state.isConnected) ? canvas : loading)
-
+            // return canvas;
     }
 }
 

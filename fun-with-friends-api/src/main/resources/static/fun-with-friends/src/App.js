@@ -12,14 +12,12 @@ class App extends Component {
         return (
             <Router>
                 <div>
-                    <DrawWithFriends />
-                    {/* <PongWithFriends /> */}
-                    {/*<Switch>*/}
-                    {/*    <Route path='/' exact component={Login}/>*/}
-                    {/*    <Route path='/draw-wf' component={DrawWithFriends}/>*/}
+                    <Switch>
+                       <Route path='/' exact component={Login}/>
+                       <Route path='/draw-wf' component={DrawWithFriends}/>
                     {/*    /!*<Route path='/pong-wf' component={PongWithFriends}/>*!/*/}
                     {/*    <Route path='/rooms' component={CreateRoom}/>*/}
-                    {/*</Switch>*/}
+                    </Switch>
                 </div>
             </Router>
         );

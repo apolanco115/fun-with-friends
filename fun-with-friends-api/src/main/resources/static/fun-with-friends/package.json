@@ -2,7 +2,7 @@
   "name": "fun-with-friends",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:8081",
   "dependencies": {
     "@material-ui/core": "^4.6.0",
     "@material-ui/styles": "^4.6.0",
