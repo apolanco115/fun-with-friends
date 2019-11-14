@@ -47,19 +47,19 @@ const Styles = styled.div`
 
 `;
 
-// const pageStyle = {
-//     height: '100vh',
-//     display: 'grid',
-//     gridTemplateColumns: 1,
-//     gridTemplateColumns: '85% 15%',
-//     background: '#656565'
+const pageStyle = {
+    height: '100vh',
+    display: 'grid',
+    gridTemplateColumns: 1,
+    gridTemplateColumns: '85% 15%',
+    background: '#656565'
     
-// }
+}
 
-// const canvasStyle = {
-//     gridRowStart: 1,
-//     gridColumnEnd: 2
-// }
+const canvasStyle = {
+    gridRowStart: 1,
+    gridColumnEnd: 2
+}
 
 const colSlider = {
     height: '15%', 
