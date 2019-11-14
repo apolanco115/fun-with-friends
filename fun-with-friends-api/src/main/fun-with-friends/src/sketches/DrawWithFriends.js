@@ -10,8 +10,8 @@ import styled from 'styled-components';
 import { template } from "@babel/core";
 
 const sliderThumbStyles = (props) => (`
-  width: 25px;
-  height: 25px;
+  width: 1.5em;
+  height: 1.5em;
   background: ${props.color};
   cursor: pointer;
   -webkit-transition: .2s;
@@ -288,6 +288,7 @@ class DrawWithFriends extends Component {
             <div style={pageStyle}>
                 <div>
                     <Styles color ={`rgb(${this.HUEtoRGB(this.state.colorValue)[0]},${this.HUEtoRGB(this.state.colorValue)[1]},${this.HUEtoRGB(this.state.colorValue)[2]})`}>
+                    <div className="value">color slider</div>
                         <input style = {colSlider} type='range' min={0} step={0.001} max={1} className='slider col-slider' value={this.state.colorValue} onChange={this.handleColorChange}/>
                     </Styles>
                     <Styles color={'#333'}>
