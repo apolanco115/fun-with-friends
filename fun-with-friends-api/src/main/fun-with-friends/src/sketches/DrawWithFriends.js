@@ -27,7 +27,7 @@ const Styles = styled.div`
   .value {
     justify-self: center;
     font-family: Sans-serif;  
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin : .5em;
   }
   .slider {

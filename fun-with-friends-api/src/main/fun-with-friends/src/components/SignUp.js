@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import {TextField, Input } from '@material-ui/core';
+import {TextField, Input, Button } from '@material-ui/core';
+import {
+    withRouter
+  } from 'react-router-dom'
 
 
 class SignUp extends Component {
@@ -33,13 +36,17 @@ class SignUp extends Component {
             console.log(signUpJsonRes);
             if (signUpJsonRes.token != null) {
                 console.log("signup success!")
-            } else {
+                this.props.history.push('/draw-wf')
+            } else if(signUpJsonRes.response==500){
                 localStorage.clear();
-                alert('please enter valid user info');
+                alert('there is already a user with that name');
+            } else{
+                localStorage.clear();
+                alert('an unrecognized error has occured, please try again')
             }
 
         } catch (error) {
-            console.log('Error creating new Course!')
+            this.props.history.push('/draw-wf')
             console.log(error)
         }
     }
@@ -60,7 +67,7 @@ class SignUp extends Component {
                             onChange={this.handleChange}
                             required
                         />
-
+                        <br />
                         <TextField
                             type="text"
                             name="username"
@@ -69,7 +76,7 @@ class SignUp extends Component {
                             onChange={this.handleChange}
                             required
                         />
-
+                        <br />
                         <TextField
                             type="password"
                             name="password"
@@ -78,6 +85,7 @@ class SignUp extends Component {
                             onChange={this.handleChange}
                             required
                         />
+                        <br />
                         <TextField
                             type="password"
                             name="password_confirmation"
@@ -86,7 +94,9 @@ class SignUp extends Component {
                             onChange={this.handleChange}
                             required
                         />
-                        <Input type="submit" placeholder='sign up!'/>
+                        <br />
+                        <Button type="submit">sign up!</Button>
+
                     </form>
             </div>
         );
@@ -96,4 +106,4 @@ class SignUp extends Component {
 const style = {
     margin: 15,
 };
-export default SignUp;
+export default withRouter(SignUp);

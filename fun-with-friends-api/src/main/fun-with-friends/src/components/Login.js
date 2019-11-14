@@ -1,7 +1,29 @@
 import React, {Component} from "react";
 import SignUp from "./SignUp";
+import Background from '../images/background_image.png';
 import {TextField, Input, Button} from '@material-ui/core';
 
+const pageStyle = {
+    display: 'grid',
+    alignContent: 'center',  
+    justifyContent: 'center', 
+    height: '100vh',
+    backgroundSize: 'contain',
+    // backgroundRepeat: 'no-repeat',
+    // objectFit: 'cover',
+    backgroundImage: `url(${Background})`
+
+}
+
+const buttonStyle = {
+    // justifySelf: 'center',
+    margin: 0
+}
+
+const formStyle = {
+    margin: 0
+    // alignSelf: 'center'
+}
 
 class Login extends Component {
     constructor(props) {
@@ -33,13 +55,13 @@ class Login extends Component {
             console.log(loginJsonRes.token);
             if (loginJsonRes.token != null) {
                 console.log("login success!")
+                this.props.history.push('/draw-wf')
             } else {
                 localStorage.clear();
                 alert('please enter valid user info');
             }
 
         } catch (error) {
-            console.log('Error creating new Course!')
             console.log(error)
         }
     }
@@ -52,10 +74,8 @@ class Login extends Component {
         event.preventDefault();
         console.log(event.target.id)
         if(event.target.id==='login-toggle'){
-            console.log('login!')
             this.setState({showLogin: true});
         }else if(event.target.id==='signup-toggle'){
-            console.log('signUp!')
             this.setState({showLogin: false});
         }
     }
@@ -72,7 +92,7 @@ class Login extends Component {
                         onChange={this.handleChange}
                         required
                     />
-
+                    <br />
                     <TextField
                         type="password"
                         name="password"
@@ -81,16 +101,21 @@ class Login extends Component {
                         onChange={this.handleChange}
                         required
                     />
-                    <Input type="submit" placeholder='sign up!'/>
+                    <br />
+                    <Button type="submit">login!</Button>
                 </form>
             </div>
         );
         const signUpForm = <SignUp />
         return (
-            <div>
-            {this.state.showLogin ? loginForm: signUpForm}
-            <Button id='login-toggle' onClick={() => this.setState({showLogin: true})}>Login </Button>
-            <Button id='signup-toggle' onClick={() => this.setState({showLogin: false})}>Sign Up</Button>
+            <div style={pageStyle} className = 'form-style'>
+                <div>    
+                    <Button style={buttonStyle} id='login-toggle' onClick={() => this.setState({showLogin: true})}>Login </Button>
+                    <Button style={buttonStyle} id='signup-toggle' onClick={() => this.setState({showLogin: false})}>Sign Up</Button>
+                </div>
+                <div style={formStyle}>
+                    {this.state.showLogin ? loginForm: signUpForm}
+                </div>
             </div>
         )
     }
