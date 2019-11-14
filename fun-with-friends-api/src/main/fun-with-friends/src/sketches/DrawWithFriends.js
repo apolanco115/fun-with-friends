@@ -14,52 +14,56 @@ const sliderThumbStyles = (props) => (`
   height: 25px;
   background: ${props.color};
   cursor: pointer;
-  outline: 5px solid #333;
   -webkit-transition: .2s;
   transition: opacity .2s;
 `);
 
 
 const Styles = styled.div`
-  display: flex;
-  align-items: center;
-  color: #888;
+  display: grid;
+  color: #FFF;
   margin-top: 2rem;
   margin-bottom: 2rem;
   .value {
-    flex: 1;
+    justify-self: center;
+    font-family: Sans-serif;  
     font-size: 2rem;
+    margin : .5em;
   }
   .slider {
-    flex: 1;
+    justify-self: center;
     -webkit-appearance: none;
-    width: 100%;
-    height: 15px;
-    border-radius: 5px;
-    background: #efefef;
+    width: 75%;
+    height: .4em;
+    border-radius: 1em;
+    background: #cdcdcd
     outline: none;
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
       ${props => sliderThumbStyles(props)}
     }
-    &::-moz-range-thumb {
-      ${props => sliderThumbStyles(props)}
-    }
   }
+
 `;
 
-const pageStyle = {
-    height: '100vh',
-    display: 'grid',
-    gridTemplateColumns: 1,
-    gridTemplateColumns: '85% 15%',
+// const pageStyle = {
+//     height: '100vh',
+//     display: 'grid',
+//     gridTemplateColumns: 1,
+//     gridTemplateColumns: '85% 15%',
+//     background: '#656565'
     
-}
+// }
 
-const canvasStyle = {
-    gridRowStart: 1,
-    gridColumnEnd: 2
+// const canvasStyle = {
+//     gridRowStart: 1,
+//     gridColumnEnd: 2
+// }
+
+const colSlider = {
+    height: '15%', 
+    background: 'linear-gradient(to right, red, orange, yellow, lime,Turquoise,Cyan, Blue, Violet, Crimson,red)'
 }
 
 class DrawWithFriends extends Component {
@@ -68,7 +72,7 @@ class DrawWithFriends extends Component {
         room: '',
         showForm: true,
         isConnected: false,
-        colorValue: 230,
+        colorValue: .7,
         brushRadius: 10
     };
     setupBeforeUnloadListener = () => {
@@ -198,8 +202,8 @@ class DrawWithFriends extends Component {
         })
     }
 
-    canvasWidth = 800;
-    canvasHeight = 800;
+    canvasWidth = 0.8365*this.p.windowWidth;
+    canvasHeight = this.p.windowHeight;
     setup = (p5, parent) => {
         this.p.createCanvas(this.canvasWidth, this.canvasHeight).parent(parent);
         this.p.background(51);
@@ -231,7 +235,7 @@ class DrawWithFriends extends Component {
 
     mouseDragged = (p5) => {
         console.log('sending: ' + this.p.mouseX + ',' + this.p.mouseY);
-        const fillCol = this.HUEtoRGB(this.state.colorValue/1000);
+        const fillCol = this.HUEtoRGB(this.state.colorValue);
         const r = fillCol[0];
         const g = fillCol[1];
         const b = fillCol[2];
@@ -282,14 +286,13 @@ class DrawWithFriends extends Component {
         )
         const canvas = (
             <div style={pageStyle}>
-                <div >
-                    <Styles color ={`rgb(${this.HUEtoRGB(this.state.colorValue/1000)[0]},${this.HUEtoRGB(this.state.colorValue/1000)[1]},${this.HUEtoRGB(this.state.colorValue/1000)[2]})`}>
-                        <input type='range' min={0} max={1000} className='slider' onChange={this.handleColorChange}/>
-                        <div className="value">color</div>
+                <div>
+                    <Styles color ={`rgb(${this.HUEtoRGB(this.state.colorValue)[0]},${this.HUEtoRGB(this.state.colorValue)[1]},${this.HUEtoRGB(this.state.colorValue)[2]})`}>
+                        <input style = {colSlider} type='range' min={0} step={0.001} max={1} className='slider col-slider' value={this.state.colorValue} onChange={this.handleColorChange}/>
                     </Styles>
-                    <Styles color={'#EFEFEF'}>
-                        <input type='range' min={1} max={50} className='slider' onChange={this.handleRadiusChange}/>
-                        <div className="value">{this.state.brushRadius}</div>
+                    <Styles color={'#333'}>
+                        <div className="value">brush radius: {this.state.brushRadius}px</div>
+                        <input type='range' min={1} max={50} className='slider brush-rad' value={this.state.brushRadius} onChange={this.handleRadiusChange}/>
                     </Styles>
                 </div>
                 <Sketch style = {canvasStyle} setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} />
