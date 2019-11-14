@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SubmitUser from "../components/SubmitUser";
 import CreateRoom from "../components/CreateRoom";
 import styled from 'styled-components';
+import { template } from "@babel/core";
 
 const sliderThumbStyles = (props) => (`
   width: 25px;
@@ -17,7 +18,6 @@ const sliderThumbStyles = (props) => (`
   -webkit-transition: .2s;
   transition: opacity .2s;
 `);
-
 
 
 const Styles = styled.div`
@@ -49,13 +49,26 @@ const Styles = styled.div`
   }
 `;
 
+const pageStyle = {
+    height: '100vh',
+    display: 'grid',
+    gridTemplateColumns: 1,
+    gridTemplateColumns: '85% 15%',
+    
+}
+
+const canvasStyle = {
+    gridRowStart: 1,
+    gridColumnEnd: 2
+}
+
 class DrawWithFriends extends Component {
     state = {
         sender: '',
         room: '',
         showForm: true,
         isConnected: false,
-        colorValue: 50,
+        colorValue: 230,
         brushRadius: 10
     };
     setupBeforeUnloadListener = () => {
@@ -268,20 +281,22 @@ class DrawWithFriends extends Component {
             </div>
         )
         const canvas = (
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
-                <Styles color ={`rgb(${this.HUEtoRGB(this.state.colorValue/1000)[0]},${this.HUEtoRGB(this.state.colorValue/1000)[1]},${this.HUEtoRGB(this.state.colorValue/1000)[2]})`}>
-                    <input type='range' min={0} max={1000} className='slider' onChange={this.handleColorChange}/>
-                    <div className="value">color</div>
-                </Styles>
-                <Styles color={'#EFEFEF'}>
-                    <input type='range' min={1} max={50} className='slider' onChange={this.handleRadiusChange}/>
-                    <div className="value">{this.state.brushRadius}</div>
-                </Styles>
-                <Sketch setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} />
+            <div style={pageStyle}>
+                <div >
+                    <Styles color ={`rgb(${this.HUEtoRGB(this.state.colorValue/1000)[0]},${this.HUEtoRGB(this.state.colorValue/1000)[1]},${this.HUEtoRGB(this.state.colorValue/1000)[2]})`}>
+                        <input type='range' min={0} max={1000} className='slider' onChange={this.handleColorChange}/>
+                        <div className="value">color</div>
+                    </Styles>
+                    <Styles color={'#EFEFEF'}>
+                        <input type='range' min={1} max={50} className='slider' onChange={this.handleRadiusChange}/>
+                        <div className="value">{this.state.brushRadius}</div>
+                    </Styles>
+                </div>
+                <Sketch style = {canvasStyle} setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} />
             </div>
         )
-        return (this.state.showForm ? form : (this.state.isConnected) ? canvas : loading)
-            // return canvas;
+        // return (this.state.showForm ? form : (this.state.isConnected) ? canvas : loading)
+            return canvas;
     }
 }
 
