@@ -4,10 +4,8 @@ import p5 from 'p5';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import SubmitUser from "../components/SubmitUser";
 import CreateRoom from "../components/CreateRoom";
 import styled from 'styled-components';
-import { template } from "@babel/core";
 
 const sliderThumbStyles = (props) => (`
   width: 1.5em;
@@ -187,7 +185,6 @@ class DrawWithFriends extends Component {
     }
 
     setUserAndRoom = (usr) => {
-        // this.login(usr);
         console.log("the set data:" + usr.user);
         this.setState({
             sender: usr.user,
@@ -299,8 +296,8 @@ class DrawWithFriends extends Component {
                 <Sketch style = {canvasStyle} setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} />
             </div>
         )
-        // return (this.state.showForm ? form : (this.state.isConnected) ? canvas : loading)
-            return canvas;
+        return (this.state.showForm ? form : (this.state.isConnected) ? canvas : loading)
+            // return canvas;
     }
 }
 
