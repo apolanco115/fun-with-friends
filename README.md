@@ -50,3 +50,32 @@ The web application was tested on chrome.
 * [Spring Framework](https://spring.io/projects/spring-boot) - For Web sockets and REST API
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [React.js](https://reactjs.org/) - For client side view
+
+
+## User Stories
+
+* As a user, I can create an account.
+
+* As a user, I can login once an account has been created.
+
+* As a user, I can create a room for drawing.
+
+* As a user, I can join a created room for drawing.
+
+* As a user, I can draw on a canvas and communicate it via a web socket.
+
+* As a user, I can receive a draw message via a web socket and see the drawing on my screen.
+
+* As a user, I can change the color of my brush.
+
+* As a user, I can change the size of my brush.
+
+## Future Work
+
+* Add the ability to save download state of canvas
+
+* Add the ability to change shape of brush
+
+* Add an eraser option
+
+* Add other multi-user applications
