@@ -50,6 +50,7 @@ The web application was tested on chrome.
 * [Spring Framework](https://spring.io/projects/spring-boot) - For Web sockets and REST API
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [React.js](https://reactjs.org/) - For client side view
+* [Docker](https://www.docker.com/) - For the containerization of the application
 
 
 ## User Stories
