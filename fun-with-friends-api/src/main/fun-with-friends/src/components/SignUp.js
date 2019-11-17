@@ -15,7 +15,8 @@ class SignUp extends Component {
             password_confirmation: ''
         }
     }
-
+    // called upon submission of signup form, makes an async-await post request to API
+    // then redirects to web app
     handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -42,7 +43,7 @@ class SignUp extends Component {
                 alert('there is already a user with that name');
             } else{
                 localStorage.clear();
-                alert('an unrecognized error has occured, please try again')
+                alert('an unrecognized error has occurred, please try again')
             }
 
         } catch (error) {
@@ -50,8 +51,8 @@ class SignUp extends Component {
             console.log(error)
         }
     }
+    //sets the username,password, and password confirm states.
     handleChange = (event) => {
-        console.log("event");
         this.setState({[event.target.name] : event.target.value})
     }
 
@@ -103,7 +104,4 @@ class SignUp extends Component {
     }
 }
 
-const style = {
-    margin: 15,
-};
 export default withRouter(SignUp);

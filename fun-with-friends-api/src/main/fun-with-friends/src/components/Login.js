@@ -33,7 +33,8 @@ class Login extends Component {
         }
     }
 
-// called upon submission of login form, makes an async-await post request to API then redirects to web app
+    // called upon submission of login form, makes an async-await post request to API
+    // then redirects to web app
     handleSubmit = async (event) => {
         event.preventDefault();
         try {
