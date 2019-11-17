@@ -1,8 +1,10 @@
 package com.example.springwebsocket.model;
 
 public class Message {
+    //string storing data to be used in massage
     private String content;
     private String sender;
+    //enum of type of message, a chat message contains data to be used by webapp, other messags keep track of status of user.
     private MessageType Type;
 
     public Message() {

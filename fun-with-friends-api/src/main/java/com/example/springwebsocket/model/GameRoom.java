@@ -60,17 +60,15 @@ public class GameRoom {
         this.currentUsers = currentUsers;
     }
 
+    //adds user to room and increases count
     public void addUsers(User user) {
         if(currentUsers==null){
             currentUsers = new ArrayList<>();
         }
-        System.out.println("adding "+user.getUsername());
         currentUsers.add(user);
-        System.out.println("adjusting count");
         setUserCount(currentUsers.size());
-        System.out.println("the count is "+currentUsers.size());
     }
-
+    //removed=s user from room and decreases count
     public void removeUser(User user) {
         currentUsers.remove(user);
         setUserCount(currentUsers.size());

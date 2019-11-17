@@ -18,6 +18,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    //keeps track of current room user is in
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="game_room_id")
     private GameRoom currentRoom;
