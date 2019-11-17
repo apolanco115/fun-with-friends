@@ -2,9 +2,6 @@ import React, {Component} from "react";
 import {HashRouter as Router, Switch, Route} from 'react-router-dom';
 import DrawWithFriends from "./sketches/DrawWithFriends"
 import Login from "./components/Login";
-import CreateRoom from "./components/CreateRoom";
-import PongWithFriends from "./sketches/PongWithFriends";
-import Slider from "./components/Slider";
 
 class App extends Component {
 
@@ -13,10 +10,10 @@ class App extends Component {
             <Router>
                 <div>
                     <Switch>
+                       {/* routes to login/signup page*/}
                        <Route exact path='/' component={Login}/>
+                       {/*routes to actual draw app*/}
                        <Route path='/draw-wf' component={DrawWithFriends}/>
-                    {/*    /!*<Route path='/pong-wf' component={PongWithFriends}/>*!/*/}
-                    {/*    <Route path='/rooms' component={CreateRoom}/>*/}
                     </Switch>
                 </div>
             </Router>
