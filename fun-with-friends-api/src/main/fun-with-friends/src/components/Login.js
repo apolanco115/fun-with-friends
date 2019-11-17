@@ -3,26 +3,24 @@ import SignUp from "./SignUp";
 import Background from '../images/background_image.png';
 import {TextField, Input, Button} from '@material-ui/core';
 
+//styling for login page
 const pageStyle = {
     display: 'grid',
     alignContent: 'center',  
     justifyContent: 'center', 
     height: '100vh',
     backgroundSize: 'contain',
-    // backgroundRepeat: 'no-repeat',
-    // objectFit: 'cover',
     backgroundImage: `url(${Background})`
-
 }
 
+//styling for buttons associated with form
 const buttonStyle = {
-    // justifySelf: 'center',
     margin: 0
 }
 
+//styling for the login/signup forms
 const formStyle = {
     margin: 0
-    // alignSelf: 'center'
 }
 
 class Login extends Component {
@@ -31,11 +29,11 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            showLogin: true
+            showLogin: true //keeps track of which form (login or sign up) to render
         }
     }
 
-
+// called upon submission of login form, makes an async-await post request to API then redirects to web app
     handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -54,7 +52,7 @@ class Login extends Component {
             localStorage.setItem('user', loginJsonRes.token);
             console.log(loginJsonRes.token);
             if (loginJsonRes.token != null) {
-                console.log("login success!")
+                //redirects to webapp if non-null token
                 this.props.history.push('/draw-wf')
             } else {
                 localStorage.clear();
@@ -66,19 +64,11 @@ class Login extends Component {
         }
     }
 
+    //sets the username and password states.
     handleChange = (event) => {
-        console.log("event");
         this.setState({[event.target.name]: event.target.value})
     }
-    handleClick = (event) =>{
-        event.preventDefault();
-        console.log(event.target.id)
-        if(event.target.id==='login-toggle'){
-            this.setState({showLogin: true});
-        }else if(event.target.id==='signup-toggle'){
-            this.setState({showLogin: false});
-        }
-    }
+
 
     render() {
         const loginForm = (
@@ -120,9 +110,5 @@ class Login extends Component {
         )
     }
 }
-
-const style = {
-    margin: 15,
-};
 
 export default Login;
