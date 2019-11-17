@@ -10,18 +10,17 @@ class CreateRoom extends Component {
                 user: '',
                 room: ''
             },
-            isCreateRoom: true
+            isCreateRoom: true //keeps track of creating a room and entering a room
         }
     }
 
+    //gets currently logged in user through local storage and sets the state.
     getUser = async () => {
-
         try {
             const getUserResponse = await fetch(`/user`, {
                 method: "get",
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("user"),
-                    // "Content-Type": "application/json"
                 }
             })
 
@@ -30,17 +29,17 @@ class CreateRoom extends Component {
             console.log("the user is: " + username);
             this.setState({roomAndUsers: {...this.state.roomAndUsers, user: username}});
         } catch (error) {
-            console.log('Error creating new Course!')
             console.log(error)
         }
     }
 
+    //based on state, creates a room and joins user or just joins users.
     handleSubmit = async (event) => {
         event.preventDefault();
         this.getUser();
         let roomResponse = null;
         try {
-            if (this.state.isCreateRoom) {
+            if (this.state.isCreateRoom) {//room creation
                 roomResponse = await fetch(`game-room/create`, {
                     method: "post",
                     headers: {
@@ -51,7 +50,7 @@ class CreateRoom extends Component {
                         roomName: this.state.roomAndUsers.room
                     })
                 })
-            } else {
+            } else {//room joining
                 roomResponse = await fetch(`game-room/join-${this.state.roomAndUsers.room}`, {
                     method: "post",
                     headers: {
@@ -60,27 +59,18 @@ class CreateRoom extends Component {
                     }
                 })
             }
-
             const roomJsonRes = await roomResponse.json();
-            // localStorage.setItem('user', roomJsonRes.token);
             console.log(roomJsonRes);
-            // if (roomJsonRes.token != null) {
-            //     console.log("signup success!")
-            // } else {
-            //     localStorage.clear();
-            //     alert('please enter valid user info');
-            // }
-
         } catch (error) {
-            console.log('Error creating new Course!')
             console.log(error)
         }
         this.props.setUserAndRoom(this.state.roomAndUsers)
     }
+
+    //sets user and room states
     handleChange = (event) => {
         console.log("event");
         this.setState({roomAndUsers: {...this.state.roomAndUsers, room: event.target.value}});
-        // this.setState({[event.target.name]: event.target.value})
     }
 
     render() {

@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CreateRoom from "../components/CreateRoom";
 import styled from 'styled-components';
 
+//styling for thumb of sliders
 const sliderThumbStyles = (props) => (`
   width: 1.5em;
   height: 1.5em;
@@ -16,7 +17,7 @@ const sliderThumbStyles = (props) => (`
   transition: opacity .2s;
 `);
 
-
+//general styling of sliders
 const Styles = styled.div`
   display: grid;
   color: #FFF;
@@ -45,20 +46,20 @@ const Styles = styled.div`
 
 `;
 
+//grid styling for page layout
 const pageStyle = {
     height: '100vh',
     display: 'grid',
-    gridTemplateColumns: 1,
     gridTemplateColumns: '85% 15%',
     background: '#656565'
     
 }
-
+//styling of the draw canvas
 const canvasStyle = {
     gridRowStart: 1,
     gridColumnEnd: 2
 }
-
+//specific styling of color slider
 const colSlider = {
     height: '15%', 
     background: 'linear-gradient(to right, red, orange, yellow, lime,Turquoise,Cyan, Blue, Violet, Crimson,red)'
@@ -68,11 +69,12 @@ class DrawWithFriends extends Component {
     state = {
         sender: '',
         room: '',
-        showForm: true,
-        isConnected: false,
-        colorValue: .7,
-        brushRadius: 10
+        showForm: true,//keeps track of showing create/join room form
+        isConnected: false,//keeps track of whether or not websocket is open
+        colorValue: .7,//initial color of slider
+        brushRadius: 10//initial brush radius
     };
+    //keeps track of whether or not a browser window or tab has been attempted closed
     setupBeforeUnloadListener = () => {
         window.addEventListener("beforeunload", (ev) => {
             ev.preventDefault();
@@ -92,12 +94,13 @@ class DrawWithFriends extends Component {
     }
 
 
-    ws = null;
-    stompClient = null;
-    topic = null;
-    currentSubscription = null;
-    p = new p5();
+    ws = null;//websocket connection
+    stompClient = null;//stomp js client
+    topic = null;//websocket endpoint
+    currentSubscription = null;//current listening port
+    p = new p5();//instance of p5js class for canvas and drawing
 
+    //joins user after room creation and opens websocket connections
     joinRoom = async () => {
         try {
             const joinRoomResponse = await fetch(`/game-room/join-${this.state.room}`,
@@ -116,7 +119,7 @@ class DrawWithFriends extends Component {
             console.log(error)
         }
     }
-
+    //disconnections user from room.
     leaveRoom = async () => {
         try {
             const leaveRoomResponse = await fetch(`/game-room/leave`,
@@ -133,6 +136,7 @@ class DrawWithFriends extends Component {
         }
     }
 
+    //connects websocket to room
     enterRoom = () => {
         const username = this.state.name;
         this.topic = `/app/game/${this.state.room}`;
@@ -149,11 +153,10 @@ class DrawWithFriends extends Component {
     onConnected = () => {
         this.enterRoom();
     }
-
+    //disconnections websocket
     disconnect = (event) => {
         if (this.stompClient !== null) {
             this.leaveRoom();
-            console.log("left room");
             // Tell your username to the server
             this.currentSubscription = this.stompClient.subscribe(`/topic/${this.state.room}`, this.onMessageReceived);
 
@@ -167,7 +170,6 @@ class DrawWithFriends extends Component {
 
     onDisconnected = () => {
         this.leaveRoom();
-        console.log("left room");
         // Tell your username to the server
         this.currentSubscription = this.stompClient.subscribe(`/topic/${this.state.room}`, this.onMessageReceived);
 
@@ -175,17 +177,17 @@ class DrawWithFriends extends Component {
         this.setState({isConnected: false})
     }
 
+    //draws on canvas when a chat type message is receieved from another user
     onMessageReceived = (message) => {
         const messageDat = JSON.parse(message.body);
-        console.log("the sender: " + messageDat.sender)
         if ((messageDat.sender !== this.state.sender) && messageDat.type === 'CHAT') {
             this.newDrawing(messageDat);
         }
         console.log("received: " + messageDat)
     }
 
+    //sets the state of current room and user, renders canvas, and initiates websocket connections
     setUserAndRoom = (usr) => {
-        console.log("the set data:" + usr.user);
         this.setState({
             sender: usr.user,
             room: usr.room,
@@ -193,22 +195,21 @@ class DrawWithFriends extends Component {
         }, () => {
             const username = this.state.sender;
             this.joinRoom();
-            // if (username) {
-
-            // }
         })
     }
 
+    //width and height of draw canvas vars
     canvasWidth = 0.8365*this.p.windowWidth;
     canvasHeight = this.p.windowHeight;
+
+    //creates the canvas with specified width, height, and background color.
     setup = (p5, parent) => {
         this.p.createCanvas(this.canvasWidth, this.canvasHeight).parent(parent);
         this.p.background(51);
-        // const slider = this.p.createSlider(0, 255, 100);
-
-        // const color_picker = this.p.createColorPicker("green").parent(parent);
 
     }
+
+    //converts HSL color to RGB color
     HUEtoRGB = (H) => {
         let R = Math.abs(H * 6.0 - 3.0) - 1.0;
         let G = 2.0 - Math.abs(H * 6.0 - 2.0);
@@ -218,20 +219,17 @@ class DrawWithFriends extends Component {
             Math.max(0, Math.min(255, B*255))];
     }
 
-
+    //draws data from incoming message.
     newDrawing = (messageContent) => {
         const data = JSON.parse(messageContent.content)
-        console.log("the sender is: " + this.state.sender);
-        console.log("the data:" + data.mouseX)
-        console.log("the data:" + data.mouseY)
-        console.log("the data r,g,b: " + data.r + " " + data.g + " " + data.b)
         this.p.noStroke();
         this.p.fill(data.r, data.g, data.b)
         this.p.ellipse(data.mouseX, data.mouseY, data.brushRadius, data.brushRadius);
     }
 
+    //recognizes when a mouseDragged event occurs; sends data through websocket to other connected users
+    //draws to canvas.
     mouseDragged = (p5) => {
-        console.log('sending: ' + this.p.mouseX + ',' + this.p.mouseY);
         const fillCol = this.HUEtoRGB(this.state.colorValue);
         const r = fillCol[0];
         const g = fillCol[1];
@@ -249,8 +247,6 @@ class DrawWithFriends extends Component {
             type: 'CHAT'
         }
         if(this.p.mouseX >= 0 && this.p.mouseY >= 0){
-            console.log("the mouse position X: "+ this.p.mouseX +" is less than " +this.canvasWidth);
-            console.log("the mouse position Y: "+ this.p.mouseY +" is less than " +this.canvasHeight);
             if(this.p.mouseX<this.canvasWidth && this.p.mouseY < this.canvasHeight)
                 this.stompClient.send(`${this.topic}/sendMessage`, {}, JSON.stringify(data))
         }
@@ -260,10 +256,11 @@ class DrawWithFriends extends Component {
 
     }
 
+    //sets color state of slider
     handleColorChange = (e) => {
         this.setState({colorValue: e.target.value})
     }
-
+    //sets brush radius state of slider
     handleRadiusChange = (e) => {
         this.setState( {brushRadius: e.target.value})
     }
@@ -296,8 +293,10 @@ class DrawWithFriends extends Component {
                 <Sketch style = {canvasStyle} setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} />
             </div>
         )
+        //displays form when no room has been specified; displays loading circle when
+        //no connection to websocket
+        //displays canvas if not the above.
         return (this.state.showForm ? form : (this.state.isConnected) ? canvas : loading)
-            // return canvas;
     }
 }
 
