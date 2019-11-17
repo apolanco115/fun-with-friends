@@ -34,12 +34,9 @@ public class GameRoomServiceImpl implements GameRoomService {
     public GameRoom createGameRoom(GameRoom newGamRoom){
         Authentication auth = authImpl.getAuthentication();
         User user = userService.getUser(auth.getName());
-//        user.setCurrentRoom(newGamRoom);
-//        newGamRoom.addUsers(user);
-
         return gameRoomRepository.save(newGamRoom);
     }
-
+    //adds user to game room; prevents more than two users per room
     @Override
     public ResponseEntity joinGameRoom(String roomName) {
         GameRoom gameRoom = gameRoomRepository.findByRoomName(roomName);
@@ -49,11 +46,9 @@ public class GameRoomServiceImpl implements GameRoomService {
         }else{
             Authentication auth = authImpl.getAuthentication();
             User user = userService.getUser(auth.getName());
-            System.out.println("the user to join is "+user.getUsername());
             user.setCurrentRoom(gameRoom);
             gameRoom.addUsers(user);
             gameRoomRepository.save(gameRoom);
-            System.out.println("in room "+user.getCurrentRoom().getRoomName());
         }
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -63,6 +58,7 @@ public class GameRoomServiceImpl implements GameRoomService {
         return gameRoomRepository.findByRoomName(roomName);
     }
 
+    //removes user from room; deletes game room entirely if no users in room.
     @Override
     public void leaveRoom(){
         Authentication auth = authImpl.getAuthentication();
