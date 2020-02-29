@@ -53,25 +53,6 @@ The web application was tested on chrome.
 * [p5.js](https://p5js.org/) - For sketches
 * [Docker](https://www.docker.com/) - For the containerization of the application
 
-
-## User Stories
-
-* As a user, I can create an account.
-
-* As a user, I can login once an account has been created.
-
-* As a user, I can create a room for drawing.
-
-* As a user, I can join a created room for drawing.
-
-* As a user, I can draw on a canvas and communicate it via a web socket.
-
-* As a user, I can receive a draw message via a web socket and see the drawing on my screen.
-
-* As a user, I can change the color of my brush.
-
-* As a user, I can change the size of my brush.
-
 ## Future Work
 
 * Add the ability to save download state of canvas
